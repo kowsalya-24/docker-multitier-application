@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Nginx service to act as the frontend and reverse proxy
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+    volumes:
+      # Mount the public directory to get real-time updates for the HTML file
+      - ./public:/usr/share/nginx/html/public
+    depends_on:
+      - nodejs
+
+  # Node.js service for the backend API
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile.nodejs
+    environment:
+      # Load environment variables from the .env file
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - PORT=${PORT}
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      # Mount the current directory into the container for live reloading
+      - .:/app
+      - /app/node_modules # Avoid overwriting node_modules
+    
+  # MySQL database service
+  mysql:
+    image: mysql:8.0
+    environment:
+      # Use variables from .env file for database configuration
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      # Persist the database data to avoid data loss on container restart
+      - mysql_data:/var/lib/mysql
+      # Initialize the database with the schema.sql file
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    
+  # Redis service for caching
+  redis:
+    image: redis:7.0-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+volumes:
+  # Define volumes for data persistence
+  mysql_data:
+  redis_data:
