@@ -37,7 +37,7 @@ Before getting started, ensure you have the following installed:
 ├── Dockerfile.nodejs<br>
 ├── docker-compose.yml<br>
 └── public<br>
-        └── index.html
+<\t>└── index.html
 
 ---
 
@@ -47,7 +47,7 @@ Follow these steps to get the application up and running:
 
 ### 1. Clone the Repository
 
-git clone https://github.com/kowsalya-24/docker-multitier-application.git<br>
+git clone https://github.com/kowsalya-24/docker-multitier-nnmr-application.git<br>
 cd docker-multitier-application
 
 ---
