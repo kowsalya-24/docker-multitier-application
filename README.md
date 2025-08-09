@@ -27,17 +27,17 @@ Before getting started, ensure you have the following installed:
 
 ## 📂 Project Structure
 
-.<br>
-├── .env<br>
-├── package.json<br>
-├── server.js<br>
-├── schema.sql<br>
-├── nginx.conf<br>
-├── Dockerfile.nginx<br>
-├── Dockerfile.nodejs<br>
-├── docker-compose.yml<br>
-└── public<br>
-<\t>└── index.html
+workdir
+* .env
+* package.json
+* server.js
+* schema.sql
+* nginx.conf
+* Dockerfile.nginx
+* Dockerfile.nodejs
+* docker-compose.yml
+* public
+-- index.html
 
 ---
 
